@@ -1,7 +1,6 @@
 #!/usr/bin/python
 import time, sys, signal, json, yaml, os
 
-from gpiozero import LED
 from influxdb import InfluxDBClient
 from datetime import date, datetime
 
@@ -9,14 +8,9 @@ import subprocess
 
 config = yaml.safe_load(open(os.path.dirname(sys.argv[0]) + "/config.yml"))
 
-redled = LED(26)
-
 base_dir = '/sys/bus/w1/devices/'
 sonde1 = base_dir + '28-0319a2790f6a/w1_slave'
 sonde2 = base_dir + '28-0319a2792d11/w1_slave'
-
-def setup():
-    redled.off()
 
 def read_temp_raw(sonde):
     f = open(sonde, 'r')
@@ -39,7 +33,6 @@ def read_temp(sonde):
 
 def loop():
   while True:
-    redled.on()
     date=datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
     print date
     print("Sonde 1 : %.2f" % read_temp(sonde1))
@@ -70,18 +63,12 @@ def loop():
     #result = client.query('select value from temperature;')
     #print("Result: {0}".format(result))
 
-    redled.off()
     time.sleep(1)
 
-def destroy():
-  redled.off()
-
 def signal_term_handler(signal, frame):
-  destroy()
   sys.exit(0)
 
 if __name__ == '__main__':
-  setup()
   signal.signal(signal.SIGTERM, signal_term_handler)
   try:
     loop()

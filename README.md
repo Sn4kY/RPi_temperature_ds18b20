@@ -1,4 +1,4 @@
-# Photobooth
+# Temperature Monitoring with multiple DS18B20 sensors with Raspberry Pi, with push to InfluxDB
 ## Prerequisites
 ```
 sudo apt install python-influxdb python-yaml
