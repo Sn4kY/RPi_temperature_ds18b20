@@ -70,7 +70,4 @@ def signal_term_handler(signal, frame):
 
 if __name__ == '__main__':
   signal.signal(signal.SIGTERM, signal_term_handler)
-  try:
-    loop()
-  except KeyboardInterrupt:
-    destroy()
+  loop()
