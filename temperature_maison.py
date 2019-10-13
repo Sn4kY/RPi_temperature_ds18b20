@@ -34,8 +34,11 @@ def read_temp(sonde):
 def loop():
   while True:
     date=datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+    t_sonde1 = read_temp(sonde1)
+    t_sonde2 = read_temp(sonde2)
     print date
-    print("Sonde 1 : %.2f" % read_temp(sonde1))
+    print("Sonde 1 : %.2f" % t_sonde1)
+    print("Sonde 2 : %.2f" % t_sonde2)
     json_body = [
     {
       "measurement": "temperature",
@@ -43,7 +46,7 @@ def loop():
         "host": "sonde1"
       },
       "time": date,
-      "fields": { "value": read_temp(sonde1)
+      "fields": { "value": t_sonde1
       }
     },
     {
@@ -52,18 +55,17 @@ def loop():
         "host": "sonde2"
       },
       "time": date,
-      "fields": { "value": read_temp(sonde2)
+      "fields": { "value": t_sonde1
       }
     }
     ]
-    print("Sonde 2 : %.2f" % read_temp(sonde2))
 
     client = InfluxDBClient(config['influxdb']['host'], config['influxdb']['port'], config['influxdb']['user'], config['influxdb']['passwd'], config['influxdb']['db'])
     push_result=client.write_points(json_body,time_precision='ms')
     #result = client.query('select value from temperature;')
     #print("Result: {0}".format(result))
 
-    time.sleep(1)
+    time.sleep(5)
 
 def signal_term_handler(signal, frame):
   sys.exit(0)
