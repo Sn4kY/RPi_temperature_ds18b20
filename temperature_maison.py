@@ -37,8 +37,8 @@ def loop():
     t_sonde1 = read_temp(sonde1)
     t_sonde2 = read_temp(sonde2)
     print date
-    print("Sonde 1 : %.2f" % t_sonde1)
-    print("Sonde 2 : %.2f" % t_sonde2)
+    print("Sonde 1 : %.1f" % t_sonde1)
+    print("Sonde 2 : %.1f" % t_sonde2)
     json_body = [
     {
       "measurement": "temperature",
@@ -55,7 +55,7 @@ def loop():
         "host": "sonde2"
       },
       "time": date,
-      "fields": { "value": t_sonde1
+      "fields": { "value": t_sonde2
       }
     }
     ]
