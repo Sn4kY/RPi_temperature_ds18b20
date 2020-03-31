@@ -4,3 +4,4 @@ influxdb:
   user: admin
   passwd: 
   db: database
+  timeout: 10

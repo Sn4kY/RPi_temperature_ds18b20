@@ -60,7 +60,7 @@ def loop():
     }
     ]
 
-    client = InfluxDBClient(config['influxdb']['host'], config['influxdb']['port'], config['influxdb']['user'], config['influxdb']['passwd'], config['influxdb']['db'])
+    client = InfluxDBClient(config['influxdb']['host'], config['influxdb']['port'], config['influxdb']['user'], config['influxdb']['passwd'], config['influxdb']['db'], config['influxdb']['timeout'])
     push_result=client.write_points(json_body,time_precision='ms')
     #result = client.query('select value from temperature;')
     #print("Result: {0}".format(result))
