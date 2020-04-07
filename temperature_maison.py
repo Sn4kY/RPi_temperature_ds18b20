@@ -1,7 +1,8 @@
 #!/usr/bin/python
-import time, sys, signal, json, yaml, os
+import time, sys, signal, json, yaml, os, requests
 
 from influxdb import InfluxDBClient
+from influxdb.exceptions import InfluxDBClientError, InfluxDBServerError
 from datetime import date, datetime
 
 import subprocess
@@ -61,7 +62,12 @@ def loop():
     ]
 
     client = InfluxDBClient(config['influxdb']['host'], config['influxdb']['port'], config['influxdb']['user'], config['influxdb']['passwd'], config['influxdb']['db'], config['influxdb']['timeout'])
-    push_result=client.write_points(json_body,time_precision='ms')
+    try:
+      client.write_points(json_body,time_precision='ms')
+    except (requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout,
+                  InfluxDBClientError, InfluxDBServerError) as err:
+      print("Oops ! connextion error !")
+
     #result = client.query('select value from temperature;')
     #print("Result: {0}".format(result))
 
